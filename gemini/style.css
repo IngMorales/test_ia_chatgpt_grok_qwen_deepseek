@@ -1,0 +1,423 @@
+/* Estilos generales y reset */
+:root {
+    --primary-color: #6a11cb; /* Morado */
+    --secondary-color: #2575fc; /* Azul */
+    --accent-color: #ff6b6b; /* Rojo coral para alertas/vencido */
+    --completed-color: #4caf50; /* Verde para completado */
+    --text-color: #333;
+    --bg-color: #f4f7f6;
+    --card-bg: #ffffff;
+    --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    --border-radius: 8px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+.container {
+    max-width: 1100px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+}
+
+h1, h2, h3 {
+    margin-bottom: 0.8rem;
+    color: var(--primary-color);
+}
+
+h2 {
+   border-bottom: 2px solid var(--secondary-color);
+   padding-bottom: 0.5rem;
+   margin-bottom: 1.5rem;
+}
+
+/* Hero Section / Landing */
+.hero {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    padding: 4rem 1rem;
+    text-align: center;
+    min-height: 50vh; /* Ajusta según necesites */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden; /* Para contener pseudo-elementos si los usas */
+}
+
+.hero::before { /* Efecto sutil de fondo */
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+    background-size: 20px 20px;
+    animation: subtlePan 60s linear infinite;
+    z-index: 0;
+}
+
+@keyframes subtlePan {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(-50px, -50px); } /* Ajusta la velocidad y dirección */
+}
+
+
+.hero-content {
+    z-index: 1;
+    max-width: 700px;
+}
+
+.hero h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.hero p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+}
+
+/* Animación de entrada para el formulario inicial */
+.animated-entry {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 0.8s ease-out forwards;
+    animation-delay: 0.5s; /* Retraso para que aparezca después del texto */
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Formularios */
+#list-creator-initial, .add-list-form-main {
+    background: rgba(255, 255, 255, 0.15);
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    margin-top: 1rem;
+    backdrop-filter: blur(5px); /* Efecto cristalino */
+}
+
+#list-creator-initial h2 {
+    color: white;
+    font-size: 1.3rem;
+    border-bottom: none;
+    margin-bottom: 1rem;
+}
+
+.add-list-form-main {
+     margin-bottom: 2rem;
+     background: var(--card-bg); /* Fondo normal fuera del hero */
+     box-shadow: var(--shadow);
+     backdrop-filter: none;
+}
+
+
+input[type="text"],
+input[type="date"] {
+    width: calc(100% - 130px); /* Ajusta según tamaño de botón */
+    padding: 0.8rem;
+    margin-right: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparente en hero */
+}
+
+.add-list-form-main input[type="text"],
+.add-list-form-main input[type="date"] {
+    background-color: #fff; /* Opaco fuera del hero */
+    width: calc(50% - 85px); /* Ajusta para dos inputs + botón */
+    margin-bottom: 0.5rem; /* Para pantallas pequeñas */
+}
+
+@media (max-width: 600px) {
+    input[type="text"],
+    input[type="date"],
+    .add-list-form-main input[type="text"],
+    .add-list-form-main input[type="date"] {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 0.5rem;
+    }
+    #list-creator-initial button,
+    .add-list-form-main button {
+        width: 100%;
+    }
+}
+
+
+/* Botones */
+.btn {
+    padding: 0.8rem 1.2rem;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    color: white;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+}
+
+.btn-primary {
+    background-color: var(--accent-color);
+}
+.btn-primary:hover {
+    background-color: #e63946;
+}
+
+.btn-secondary {
+    background-color: var(--secondary-color);
+}
+.btn-secondary:hover {
+    background-color: #1a5db3;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    font-size: 0.8em;
+    padding: 0.3rem 0.6rem;
+}
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+.btn-edit {
+    background-color: #ffc107;
+    color: #333;
+    font-size: 0.8em;
+    padding: 0.3rem 0.6rem;
+    margin-right: 5px;
+}
+.btn-edit:hover {
+    background-color: #e0a800;
+}
+
+.btn-small {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+    margin-left: 0.5rem;
+}
+
+/* Contenedor de Listas */
+#lists-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Tarjeta de Lista */
+.list-card {
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-left: 5px solid var(--secondary-color); /* Default state: pending */
+    position: relative; /* Para la fecha */
+}
+
+.list-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.list-card.status-completed {
+    border-left-color: var(--completed-color);
+}
+.list-card.status-overdue {
+    border-left-color: var(--accent-color);
+}
+
+.list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #eee;
+}
+
+.list-header h3 {
+    margin-bottom: 0;
+    color: var(--text-color); /* Color normal dentro de la tarjeta */
+    flex-grow: 1;
+    margin-right: 10px; /* Espacio antes de los botones */
+    word-break: break-word; /* Evitar desbordamiento */
+}
+
+.list-due-date {
+    font-size: 0.85em;
+    color: #666;
+    margin-top: -0.8rem; /* Acercar a la cabecera */
+    margin-bottom: 1rem;
+    display: block; /* Asegurar que esté en su propia línea */
+}
+.list-due-date.overdue-date {
+    color: var(--accent-color);
+    font-weight: bold;
+}
+
+
+.list-controls button {
+    margin-left: 5px;
+}
+
+/* Tareas dentro de la lista */
+.task-list {
+    list-style: none;
+    margin-bottom: 1rem;
+    max-height: 200px; /* Limitar altura y permitir scroll */
+    overflow-y: auto; /* Scroll si hay muchas tareas */
+    padding-right: 5px; /* Espacio para la barra de scroll */
+}
+
+.task-item {
+    display: flex;
+    align-items: center;
+    padding: 0.6rem 0;
+    border-bottom: 1px dashed #eee;
+    transition: opacity 0.3s ease;
+}
+.task-item:last-child {
+    border-bottom: none;
+}
+
+.task-item input[type="checkbox"] {
+    margin-right: 0.8rem;
+    cursor: pointer;
+    width: 18px;
+    height: 18px;
+}
+
+.task-item span {
+    flex-grow: 1;
+    margin-right: 0.5rem;
+    word-break: break-word;
+}
+
+.task-item.completed span {
+    text-decoration: line-through;
+    color: #888;
+    font-style: italic;
+}
+
+.task-item .delete-task-btn {
+    opacity: 0; /* Oculto por defecto */
+    transition: opacity 0.3s ease;
+    background: none;
+    border: none;
+    color: var(--accent-color);
+    cursor: pointer;
+    font-size: 0.9em;
+}
+
+.task-item:hover .delete-task-btn {
+    opacity: 1; /* Visible al pasar el mouse */
+}
+
+/* Formulario para añadir tarea */
+.add-task-form {
+    display: flex;
+    margin-top: 1rem;
+}
+
+.add-task-form input[type="text"] {
+    flex-grow: 1;
+    margin-right: 0.5rem;
+    background: #f9f9f9; /* Un poco diferente para distinguirlo */
+    width: auto; /* Reset width */
+    margin-bottom: 0; /* Reset margin */
+}
+
+/* Sección de Resumen de Estado */
+#status-overview {
+    margin-top: 3rem;
+}
+
+.overview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    text-align: center;
+}
+
+.overview-card {
+    background-color: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    border-top: 5px solid; /* Borde superior para indicar estado */
+}
+
+.overview-card h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+}
+.overview-card i {
+    margin-right: 8px;
+}
+
+.overview-card p {
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+.overview-card.pending { border-color: var(--secondary-color); }
+.overview-card.pending p { color: var(--secondary-color); }
+
+.overview-card.completed { border-color: var(--completed-color); }
+.overview-card.completed p { color: var(--completed-color); }
+
+.overview-card.overdue { border-color: var(--accent-color); }
+.overview-card.overdue p { color: var(--accent-color); }
+
+/* Footer */
+footer {
+    text-align: center;
+    margin-top: 3rem;
+    padding: 1.5rem;
+    background-color: #e9ecef;
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .hero h1 {
+        font-size: 2.5rem;
+    }
+    .hero p {
+        font-size: 1rem;
+    }
+    #lists-container {
+        grid-template-columns: 1fr; /* Una columna en móviles */
+    }
+    .add-list-form-main input[type="text"],
+    .add-list-form-main input[type="date"] {
+       width: calc(100% - 150px); /* Ajustar si es necesario */
+    }
+}

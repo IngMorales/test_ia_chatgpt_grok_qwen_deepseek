@@ -1,29 +1,26 @@
-<?php
-// Configuración inicial compatible con PHP
-header('Content-Type: text/html; charset=utf-8');
-?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>TaskFlow - Gestor Avanzado de Tareas</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>TaskMaster Pro - Gestor Inteligente</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
-            --primary: #6c5ce7;
-            --secondary: #a8a5e6;
-            --success: #00b894;
-            --danger: #d63031;
-            --light: #f8f9fa;
-            --dark: #2d3436;
+            --primary: #6366f1;
+            --secondary: #818cf8;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --light: #f8fafc;
+            --dark: #1e293b;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Inter', sans-serif;
         }
 
         body {
@@ -33,57 +30,74 @@ header('Content-Type: text/html; charset=utf-8');
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 1.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
             padding: 2rem;
         }
 
         .header {
             text-align: center;
             margin-bottom: 2rem;
+            position: relative;
         }
 
         .header h1 {
-            color: var(--primary);
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            animation: float 3s ease-in-out infinite;
+            color: var(--dark);
+            font-size: 2.75rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
         }
 
         .list-creator {
             background: var(--light);
-            padding: 2rem;
-            border-radius: 15px;
+            padding: 1.5rem;
+            border-radius: 1rem;
             margin-bottom: 2rem;
-            transition: transform 0.3s;
             display: flex;
             gap: 1rem;
+            transition: transform 0.2s ease;
         }
 
-        .form-group {
+        .list-creator:hover {
+            transform: translateY(-2px);
+        }
+
+        .input-group {
             flex-grow: 1;
+            position: relative;
         }
 
         input[type="text"] {
             width: 100%;
-            padding: 0.8rem;
-            border: 2px solid #ddd;
-            border-radius: 8px;
+            padding: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 0.75rem;
             font-size: 1rem;
-            transition: border-color 0.3s;
+            transition: all 0.2s ease;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
         }
 
         .btn {
-            padding: 0.8rem 1.5rem;
+            padding: 0.75rem 1.5rem;
             border: none;
-            border-radius: 8px;
+            border-radius: 0.75rem;
             cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s;
-            white-space: nowrap;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         .btn-primary {
@@ -91,63 +105,142 @@ header('Content-Type: text/html; charset=utf-8');
             color: white;
         }
 
+        .btn-primary:hover {
+            background: #4f46e5;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
         .lists-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
             gap: 1.5rem;
-            margin-bottom: 2rem;
+            margin-bottom: 3rem;
         }
 
         .list-card {
             background: white;
-            border-radius: 15px;
+            border-radius: 1rem;
             padding: 1.5rem;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             position: relative;
-            animation: slideIn 0.5s ease-out;
+            animation: cardEnter 0.4s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
-        .status-indicator {
-            width: 15px;
-            height: 15px;
-            border-radius: 50%;
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
+        .list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .list-actions {
+            display: flex;
+            gap: 0.5rem;
         }
 
         .task-item {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 0;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: var(--light);
+            border-radius: 0.5rem;
+            margin-bottom: 0.75rem;
+            transition: all 0.2s ease;
         }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+        .task-item:hover {
+            transform: translateX(5px);
         }
 
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .progress-container {
+            background: var(--light);
+            padding: 2rem;
+            border-radius: 1rem;
+            margin-top: 2rem;
+        }
+
+        @keyframes cardEnter {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .status-chip {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            background: var(--light);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .status-chip::before {
+            content: "";
+            width: 0.5rem;
+            height: 0.5rem;
+            border-radius: 50%;
+            display: block;
+        }
+
+        .status-chip.completed {
+            color: var(--success);
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .status-chip.completed::before {
+            background: var(--success);
+        }
+
+        .status-chip.in-progress {
+            color: var(--warning);
+            background: rgba(245, 158, 11, 0.1);
+        }
+
+        .status-chip.in-progress::before {
+            background: var(--warning);
+        }
+
+        .status-chip.pending {
+            color: var(--danger);
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        .status-chip.pending::before {
+            background: var(--danger);
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>TaskFlow 🚀</h1>
+            <h1>📋 TaskMaster Pro</h1>
             <div class="list-creator">
-                <div class="form-group">
-                    <input type="text" id="listName" placeholder="Nombre de la nueva lista...">
+                <div class="input-group">
+                    <input type="text" id="listName" placeholder="Nombre de la lista...">
                 </div>
-                <button class="btn btn-primary" onclick="TaskManager.createNewList()">Crear Lista</button>
+                <button class="btn btn-primary" onclick="TaskManager.createList()">
+                    <span>➕ Crear Lista</span>
+                </button>
             </div>
         </div>
-        
+
         <div class="lists-container" id="listsContainer"></div>
-        
+
         <div class="progress-container">
             <canvas id="progressChart"></canvas>
         </div>
@@ -163,7 +256,7 @@ header('Content-Type: text/html; charset=utf-8');
                 
                 this.lists = JSON.parse(localStorage.getItem('taskLists')) || [];
                 this.initChart();
-                this.renderLists();
+                this.render();
             }
 
             static getInstance() {
@@ -173,39 +266,121 @@ header('Content-Type: text/html; charset=utf-8');
                 return TaskManager.instance;
             }
 
-            initChart() {
-                const style = getComputedStyle(document.documentElement);
-                this.chartColors = {
-                    success: style.getPropertyValue('--success'),
-                    primary: style.getPropertyValue('--primary'),
-                    danger: style.getPropertyValue('--danger')
-                };
+            // CRUD Listas
+            static createList() {
+                const instance = TaskManager.getInstance();
+                const input = document.getElementById('listName');
+                const name = input.value.trim();
+                
+                if (!name) {
+                    alert('Por favor ingresa un nombre para la lista');
+                    return;
+                }
 
-                this.ctx = document.getElementById('progressChart').getContext('2d');
-                this.chart = new Chart(this.ctx, {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['Completadas', 'En Progreso', 'Pendientes'],
-                        datasets: [{
-                            data: [0, 0, 0],
-                            backgroundColor: [
-                                this.chartColors.success,
-                                this.chartColors.primary,
-                                this.chartColors.danger
-                            ]
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: { position: 'bottom' }
-                        }
-                    }
+                instance.lists.push({
+                    id: Date.now(),
+                    name: name,
+                    tasks: [],
+                    status: 'pending',
+                    created: new Date(),
+                    lastUpdated: new Date()
                 });
+
+                input.value = '';
+                instance.save();
+                instance.render();
             }
 
-            saveToStorage() {
-                localStorage.setItem('taskLists', JSON.stringify(this.lists));
+            updateList(listId, newName) {
+                const list = this.lists.find(l => l.id === listId);
+                if (list) {
+                    list.name = newName;
+                    list.lastUpdated = new Date();
+                    this.save();
+                    this.render();
+                }
+            }
+
+            deleteList(listId) {
+                this.lists = this.lists.filter(l => l.id !== listId);
+                this.save();
+                this.render();
+            }
+
+            // CRUD Tareas
+            addTask(listId, taskText) {
+                const list = this.lists.find(l => l.id === listId);
+                if (list && taskText.trim()) {
+                    list.tasks.push({
+                        id: Date.now(),
+                        text: taskText.trim(),
+                        completed: false,
+                        created: new Date()
+                    });
+                    this.updateListStatus(listId);
+                    this.save();
+                    this.renderList(listId);
+                }
+            }
+
+            editTask(listId, taskId, newText) {
+                const list = this.lists.find(l => l.id === listId);
+                if (list) {
+                    const task = list.tasks.find(t => t.id === taskId);
+                    if (task) {
+                        task.text = newText.trim();
+                        this.save();
+                        this.renderList(listId);
+                    }
+                }
+            }
+
+            deleteTask(listId, taskId) {
+                const list = this.lists.find(l => l.id === listId);
+                if (list) {
+                    list.tasks = list.tasks.filter(t => t.id !== taskId);
+                    this.updateListStatus(listId);
+                    this.save();
+                    this.renderList(listId);
+                }
+            }
+
+            toggleTask(listId, taskId) {
+                const list = this.lists.find(l => l.id === listId);
+                if (list) {
+                    const task = list.tasks.find(t => t.id === taskId);
+                    if (task) {
+                        task.completed = !task.completed;
+                        this.updateListStatus(listId);
+                        this.save();
+                        this.renderList(listId);
+                    }
+                }
+            }
+
+            // Helpers
+            updateListStatus(listId) {
+                const list = this.lists.find(l => l.id === listId);
+                if (!list) return;
+
+                const totalTasks = list.tasks.length;
+                const completedTasks = list.tasks.filter(t => t.completed).length;
+
+                if (totalTasks === 0) {
+                    list.status = 'pending';
+                } else if (completedTasks === totalTasks) {
+                    list.status = 'completed';
+                } else if (completedTasks > 0) {
+                    list.status = 'in-progress';
+                } else {
+                    list.status = 'pending';
+                }
+                list.lastUpdated = new Date();
+            }
+
+            // Renderizado
+            render() {
+                this.renderLists();
                 this.updateChart();
             }
 
@@ -217,13 +392,32 @@ header('Content-Type: text/html; charset=utf-8');
                     const listElement = document.createElement('div');
                     listElement.className = 'list-card';
                     listElement.innerHTML = `
-                        <div class="status-indicator" style="background: ${this.getStatusColor(list.status)}"></div>
-                        <h3>${list.name}</h3>
+                        <div class="list-header">
+                            <h3 contenteditable="true" 
+                                onblur="TaskManager.getInstance().updateList(${list.id}, this.innerText)">
+                                ${list.name}
+                            </h3>
+                            <div class="list-actions">
+                                <button class="btn btn-danger" 
+                                    onclick="TaskManager.getInstance().deleteList(${list.id})">
+                                    🗑️
+                                </button>
+                            </div>
+                        </div>
+                        <div class="status-chip ${list.status}">
+                            ${this.getStatusText(list.status)}
+                        </div>
                         <div class="tasks-container" id="tasks-${list.id}"></div>
-                        <div class="task-controls">
-                            <input type="text" id="taskInput-${list.id}" placeholder="Nueva tarea...">
-                            <button onclick="TaskManager.getInstance().addTask(${list.id})" class="btn btn-primary">Agregar</button>
-                            <button onclick="TaskManager.getInstance().deleteList(${list.id})" class="btn" style="background: var(--danger); color: white">Eliminar</button>
+                        <div class="task-input" style="margin-top: 1rem;">
+                            <input type="text" 
+                                   id="taskInput-${list.id}" 
+                                   placeholder="Nueva tarea..."
+                                   onkeypress="if(event.key === 'Enter') TaskManager.getInstance().addTask(${list.id}, this.value)">
+                            <button class="btn btn-primary" 
+                                    style="margin-top: 0.5rem;"
+                                    onclick="TaskManager.getInstance().addTask(${list.id}, document.getElementById('taskInput-${list.id}').value)">
+                                ➕ Agregar Tarea
+                            </button>
                         </div>
                     `;
                     container.appendChild(listElement);
@@ -231,48 +425,88 @@ header('Content-Type: text/html; charset=utf-8');
                 });
             }
 
-            static createNewList() {
-                const instance = TaskManager.getInstance();
-                const input = document.getElementById('listName');
-                const name = input.value.trim();
-                if (name) {
-                    instance.lists.push({
-                        id: Date.now(),
-                        name: name,
-                        tasks: [],
-                        status: 'pending',
-                        created: new Date()
-                    });
-                    input.value = '';
-                    instance.saveToStorage();
-                    instance.renderLists();
-                }
+            renderTasks(listId) {
+                const list = this.lists.find(l => l.id === listId);
+                const container = document.getElementById(`tasks-${listId}`);
+                if (!container) return;
+
+                container.innerHTML = '';
+                list.tasks.forEach(task => {
+                    const taskElement = document.createElement('div');
+                    taskElement.className = 'task-item';
+                    taskElement.innerHTML = `
+                        <input type="checkbox" 
+                            ${task.completed ? 'checked' : ''} 
+                            onchange="TaskManager.getInstance().toggleTask(${listId}, ${task.id})">
+                        <span contenteditable="true" 
+                            style="${task.completed ? 'text-decoration: line-through; opacity: 0.7;' : ''}"
+                            onblur="TaskManager.getInstance().editTask(${listId}, ${task.id}, this.innerText)">
+                            ${task.text}
+                        </span>
+                        <button class="btn btn-danger" 
+                                style="margin-left: auto; padding: 0.25rem 0.5rem;"
+                                onclick="TaskManager.getInstance().deleteTask(${listId}, ${task.id})">
+                            ✖
+                        </button>
+                    `;
+                    container.appendChild(taskElement);
+                });
             }
 
-            addTask(listId) {
-                const input = document.getElementById(`taskInput-${listId}`);
-                const text = input.value.trim();
-                if (text) {
-                    const list = this.lists.find(l => l.id === listId);
-                    list.tasks.push({
-                        id: Date.now(),
-                        text: text,
-                        completed: false
-                    });
-                    input.value = '';
-                    this.updateListStatus(listId);
-                    this.saveToStorage();
-                    this.renderTasks(listId);
-                }
+            // Gráficos
+            initChart() {
+                this.ctx = document.getElementById('progressChart').getContext('2d');
+                this.chart = new Chart(this.ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Completadas', 'En Progreso', 'Pendientes'],
+                        datasets: [{
+                            data: [0, 0, 0],
+                            backgroundColor: [
+                                getComputedStyle(document.documentElement).getPropertyValue('--success'),
+                                getComputedStyle(document.documentElement).getPropertyValue('--warning'),
+                                getComputedStyle(document.documentElement).getPropertyValue('--danger')
+                            ]
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: { position: 'bottom' },
+                            tooltip: { enabled: true }
+                        }
+                    }
+                });
             }
 
-            deleteList(listId) {
-                this.lists = this.lists.filter(l => l.id !== listId);
-                this.saveToStorage();
-                this.renderLists();
+            updateChart() {
+                const counts = {
+                    completed: this.lists.filter(l => l.status === 'completed').length,
+                    'in-progress': this.lists.filter(l => l.status === 'in-progress').length,
+                    pending: this.lists.filter(l => l.status === 'pending').length
+                };
+
+                this.chart.data.datasets[0].data = [
+                    counts.completed,
+                    counts['in-progress'],
+                    counts.pending
+                ];
+                this.chart.update();
             }
 
-            // Resto de métodos manteniendo la funcionalidad pero mejor estructurados
+            // Utilidades
+            getStatusText(status) {
+                return {
+                    'completed': 'Completada',
+                    'in-progress': 'En Progreso',
+                    'pending': 'Pendiente'
+                }[status];
+            }
+
+            save() {
+                localStorage.setItem('taskLists', JSON.stringify(this.lists));
+                this.updateChart();
+            }
         }
 
         // Inicialización
